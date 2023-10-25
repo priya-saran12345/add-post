@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .blog-post {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Blog</h1>
+    
+    <!-- Add a new blog post -->
+    <div id="add-post">
+        <h2>Add a New Blog Post</h2>
+        <input type="text" id="post-title" placeholder="Title">
+        <textarea id="post-content" placeholder="Content"></textarea>
+        <input type="file" id="post-image" accept="image/*">
+        <button onclick="addBlogPost()">Add Post</button>
+    </div>
+
+    <!-- Display existing blog posts -->
+    <div id="blog-posts">
+        <h2>Blog Posts</h2>
+        <!-- Blog posts will be dynamically added here -->
+    </div>
+
+    <script>
+        // Array to store blog posts
+        let blogPosts = [];
+
+        // Function to add a new blog post
+        function addBlogPost() {
+            const title = document.getElementById("post-title").value;
+            const content = document.getElementById("post-content").value;
+            const image = document.getElementById("post-image").files[0];
+            
+            // Create a new blog post object
+            const post = { title, content, image };
+            
+            // Add the post to the array
+            blogPosts.push(post);
+            
+            // Clear the input fields
+            document.getElementById("post-title").value = "";
+            document.getElementById("post-content").value = "";
+            document.getElementById("post-image").value = "";
+
+            // Display the updated list of blog posts
+            displayBlogPosts();
+        }
+
+        // Function to display all blog posts
+        function displayBlogPosts() {
+            const blogPostsContainer = document.getElementById("blog-posts");
+            blogPostsContainer.innerHTML = ""; // Clear the container
+
+            blogPosts.forEach((post, index) => {
+                const postDiv = document.createElement("div");
+                postDiv.classList.add("blog-post");
+
+                const title = document.createElement("h3");
+                title.textContent = post.title;
+
+                const content = document.createElement("p");
+                content.textContent = post.content;
+
+                const image = document.createElement("img");
+                if (post.image) {
+                    const imageURL = URL.createObjectURL(post.image);
+                    image.src = imageURL;
+                }
+
+                postDiv.appendChild(title);
+                postDiv.appendChild(content);
+                postDiv.appendChild(image);
+                blogPostsContainer.appendChild(postDiv);
+            });
+        }
+
+        // Initial display of blog posts
+        displayBlogPosts();
+    </script>
+</body>
+</html>
